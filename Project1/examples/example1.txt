@@ -1,0 +1,39 @@
+begin_program
+
+void fun_dec main2 () {
+	
+	float number = 10.5;
+	
+	
+	int counter = 0;
+	while(counter < 10){
+		if(counter %2 == 0){
+			output("number is even");
+		}else{
+			output("number is odd");
+		}
+		counter = counter + 1;
+	}
+
+	return a;
+}
+
+
+int fun_dec factorial( int number ){
+
+	if(number < 0){
+		a = b;	
+	}
+	return x;
+	int factorial = 1;
+	int step = 1;
+	
+	while(step <= number){
+		factorial = factorial * step;
+		step = step + 1;
+	}
+	
+	return factorial;
+	
+}
+end_program

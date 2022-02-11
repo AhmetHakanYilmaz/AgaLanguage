@@ -1,0 +1,42 @@
+string fun_dec testFunction (int height, float speed, boolean isPrivateArea, string nameOfDrone, char droneLicence){
+	
+	if(!isPrivateArea){
+		if(droneLicence!='A' || droneLicence!='B'){
+			if( !((height <= 100) && (height >= 0) && (speed < 89.9) && (speed > 9.5)) ){
+				return "You cannot use" + nameOfDrone;
+			}else{
+				return "You can use" + nameOfDrone + "sometimes in this area";
+			}
+		}
+	
+	}
+	
+	return "You can use" + nameOfDrone;
+	
+	
+}
+
+float fun_dec basicCalculator(int operation, float number1, float number2){
+	if(operation == 0){
+		return number1 + number2; 
+	}else{
+		return number1 - number2;
+	}
+}
+
+fun_dec main(){
+	
+	int b = 6;
+	int a = b * 10 + 5;
+	int k = a - 5 % 3;
+	int l = (a-5) % 3;
+	float f = b / 5 + 16;
+	float casted_a = (float) a; 
+		
+	string helloWorld = "HELLO WORLD"
+	
+	output ( helloWorld);
+	
+	
+		
+}

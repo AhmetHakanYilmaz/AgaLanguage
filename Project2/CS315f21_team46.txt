@@ -1,0 +1,223 @@
+begin_program
+/*
+It takes three parameter from user which are the distances of three edges in order
+to this function work properly it is wanted from user to start 
+drone from the point A which is the
+point across the edgeA ( which is the first parameter). Drones first angle should be toward to point B. And A,B,C points should be clockwise
+*/
+void fun_dec sprayTriangle( float edgeA, float edgeB, float edgeC, float wantedAltitude,float birim )
+{
+	// Calculating angles from cosinus teorem and arcCos function which is a primitive function in aga language
+	float cosA = edgeB  * edgeB  / edgeA + edgeC * edgeC / edgeA - 2 * edgeB * edgeC / edgeA;
+	float cosB = edgeA * edgeA / edgeB + edgeC * edgeC / edgeB - 2 * edgeA * edgeC / edgeB ;
+	float cosC = edgeB   * edgeB   / edgeC + edgeA * edgeA / edgeC - 2 * edgeB   * edgeA / edgeC;
+	float angleB = fun_call arcCos(cosB);
+	float angleA = fun_call arcCos(cosA);
+	float angleC = fun_call arcCos(cosC);
+	
+	// Controlling whether the input can be triangle or not ( For example 3,1,1 is no valid input )
+	if ( cosA > 1 || cosA < -1 || cosB > 1 || cosB < -1 || cosC > 1 || cosC < -1)
+	{
+		output("The edges you wrote is not a triangle");
+		A = 0;
+	}
+	
+	// Copying the value of edgeA to A
+	float A = edgeA;
+	// In this while loop remaining edge A is controlled if it is smaller than birim spraying is stopped
+	while ( A > birim )
+	{
+	// sending drone to wantedAltitude
+	if ( fun_call readAltitudeF() != wantedAltitude)
+	{
+		float altitude= fun_call readAltitudeF();
+		float altitudeDifference = wantedAltitude - altitude;
+		fun_call moveUporDownF( "Up", altitudeDifference);
+	}	
+	// opening spray
+	fun_call changeSprayF("On");
+
+	// moving forward edgeC meter
+	fun_call moveForwardorBack( "Forward", edgeC);
+	
+	// changing the direction according to the angle of B in triangle
+	
+	float angleForTurning = 180 - angleB;
+	// turnF function gets 2 input which are turning angle and clockwise or not clockwise.
+	fun_call turnF( angleForTurning , "clockwise");
+	
+	fun_call moveForwardorBack( "Forward", birim);
+	float remainedA = A - birim;
+
+	fun_call turnF( angleForTurning , " not clockwise");
+	
+	float distance = edgeC * remainedA / edgeA ;
+	fun_call moveForwardorBack( "Back", distance );
+	
+	fun_call turnF(angleA, "clockwise" );
+
+	float distanceInEdgeB = birim * C / A;
+
+	fun_call moveForwardorBack( "Forward", distanceInEdgeB );
+	
+	fun_call turnF(angleA," not clockwise");
+	
+	float A= remainedA - birim;
+	float B= newA * B / A;
+	float C= newA * C / A; 
+	}	
+	fun_call changeSprayF("Off");
+	fun_call moveUporDownF( "Down", wantedAltitude);
+	return vr;
+}
+
+/*
+It takes edgeA and edgeB which are the edges of rectangle in order
+to this function work properly it is wanted from user to start 
+drone from the point A which is the one of the points of rectangle
+Drones initial angle should be towards to another rectangle point which makes the distance between these two points edgeA,
+the initial point and and the other point on the edgeA should be determined as drone should be able to in clockwise in first turn
+*/
+
+void fun_dec sprayRectangle( float edgeA, float edgeB,  float wantedAltitude, float birim )
+{
+	
+	float B = edgeB;
+	while ( B > birim )
+	{
+	if ( fun_call readAltitudeF() != wantedAltitude)
+	{
+		float altitude= fun_call readAltitudeF();
+		float altitudeDifference = wantedAltitude - altitude;
+		fun_call moveUporDownF( "Up", altitudeDifference);
+	}	
+	fun_call changeSprayF("On");
+	
+	fun_call moveForwardorBack( "Forward", edgeA);
+	
+
+	fun_call turnF( 90 , "clockwise");
+	
+	fun_call moveForwardorBack( "Forward", birim);
+	
+	fun_call turnF( 90, "not clockwise");
+	
+	fun_call moveForwardorBack( "Back", edgeA);
+	
+	fun_call turnF( 90 , "clockwise" );
+	fun_call moveForwardorBack( "Forward", birim );
+	
+	
+	fun_call turnF( 90 ,"not clockwise");
+	B = B - 2 * birim;
+	}	
+	fun_call changeSprayF("Off");
+	fun_call moveUporDownF( "Down", wantedAltitude);
+		return vr;
+}
+
+
+
+main(){
+
+	output ("Welcome the  drone program written with aga language");
+	
+	boolean isConnect = false;
+	boolean closeProgram = false;
+	string previousIpAddress = "";
+	string newIpAddress = "";
+
+	while( !(isConnect) && closeProgram != false ){
+		output ("Write the ip address of drone, again to try again previous ip address or write exit to finish program");
+		
+		if(newIpAddress != "again"){
+			previousIpAddress = newIpAddress;
+		}
+		newIpAddress = input(); 
+		
+		if(newIpAddress == "exit"){
+			closeProgram = true; 
+		}elif(newIpAddress == "again"){
+			isConnect = fun_call connect(previousIpAddress);
+		}else{
+			isConnect = fun_call connect(newIpAddress);
+		}
+	}
+	while ( closeProgram != true )
+	{
+	output( "If you want to spray triangle shape write 1, if you want to spray rectangle shape write 2, if 
+	you want to quit write another number" );
+	int userInput = input();
+
+	if ( userInput == 1 )
+	{
+	
+		output( " Please right the edges of triangle respectively edgeA,edgeB and edgeC"); 
+		output ( " edgeA is the edge across the point A and be sure that you put the drone in A point");
+		output ( " direction towards B. In addition be sure that A, B and C points clockwise");
+
+		output(" \n Please write the distances of edgeA , edgeB and edgeC respectively");
+		string sEdgeA = input();
+		string sEdgeB = input();
+		string sEdgeC = input();
+
+		float edgeA = (float) sEdgeA;
+		float edgeA = (float) sEdgeB;
+		float edgeA = (float) sEdgeC;
+		output("Please write the wanted Altitude for drone ");
+		string sWantedAltitude = input();
+		float wantedAltitude= (float) sWantedAltitude;
+		output("Please writes the birim for seperation ");
+		string sBirim = input();
+		float birim = (float) sBirim;
+		fun_call sprayTriangle(  edgeA, edgeB, edgeC, wantedAltitude, birim );
+	}
+
+	elif ( userInput == 2)
+	{
+		output("Please right the edges of rectangle edgeA and edgeB respectively. Please be sure that");
+		output(" drones initial position is one of the points and its direction is clockwise. In addition");
+		output(" be sure that the first edge you write edgeA must be the edge which drone is on it");
+
+		output(" \n Please write the distances of edgeA , edgeB  respectively");
+		
+		string sEdgeA = input();
+		string sEdgeB = input();
+
+		float edgeA = (float) sEdgeA;
+		float edgeA = (float) sEdgeB;
+
+
+		output("Please write the wanted Altitude for drone ");
+		string sWantedAltitude = input();
+		float wantedAltitude= (float) sWantedAltitude;
+		output("Please writes the birim for seperation ");
+		string sBirim = input();
+		float birim = (float) sBirim;
+		fun_call sprayRectangle(  edgeA, edgeB,  wantedAltitude, birim );
+	}
+						
+	else
+	{
+		closeProgram = true;
+	}
+	}
+	if(closeProgram == true){
+		output ("Goodbye");
+	}
+	
+}
+
+
+boolean fun_dec connect(string ipAddress){
+	//ConnectToBaseParam degiscek
+	boolean isConnect = fun_call connectToBaseF(ipAddress,0);
+	if(isConnect){	
+		output("Connection Successfull");
+	}else{
+		output("Connection is not successfull try again!");
+	}
+	return isConnect;
+}
+
+end_program

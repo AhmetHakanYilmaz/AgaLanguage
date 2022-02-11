@@ -1,0 +1,87 @@
+fun_dec paternSpray(int twiceOfpieceNumber,int width, int length){
+	fun_call moveForwardOrBackF(1, length / twiceOfpieceNumber);
+	fun_call stopForwardOrBackF();
+	fun_call turnF("left",90);
+	fun_call moveForwardOrBackF(1, width);
+	fun_call stopForwardOrBackF();
+	fun_call turnF("right",90);
+	fun_call moveForwardOrBackF(1, length / twiceOfpieceNumber);
+	fun_call stopForwardOrBackF();
+	fun_call turnF("right",90);
+	fun_call moveForwardOrBackF(1, width);
+	fun_call turnF("left",90);
+}
+
+fun_dec main () {
+
+	output ("Welcome the demo of drone program written with aga language");
+	output ("Write the ip address of drone");
+	
+	boolean isConnect = false;
+	boolean closeProgram = false;
+
+	while( !isConnect && (closeProgram != false) ){
+		output ("Write the ip address of drone or write exit to finish program");
+		string ipAddress = input();
+		if(ipAddress == "exit"){
+			closeProgram = true; 
+		}else{
+			isConnect = fun_call connectToBaseF(ipAddress);
+				
+				if(isConnect){	
+					output ("Connection Successfull")
+				}
+				else{
+					output ("Connection is not successfull try again!")
+				}
+			
+		}
+		
+	}
+
+	if(closeProgram == true){
+		output ("Goodbye")
+	}else{
+		output( "Please locate the drone on the edge of field you want spray" );
+		output ("Write width of field");
+		string stringWidth = input();
+		int width = (int) stringWidth;
+
+		output ("Write length of field");
+		string stringLength = input();
+		int length = (int) stringLength;
+		
+		output ("Write piece number");
+		string stringPieceNumber = input();
+		int pieceNumber = (int) stringPieceNumber;
+	
+		output ("Write altitude");
+		string stringAltitude = input();
+		int altitude = (int) stringAltitude;
+		
+		int realAltitude = fun_call readAltitudeF();		
+
+		while(realAltitude < altitude){
+			fun_call moveUporDownF(1);
+			realAltitude = fun_call readAltitudeF(); 	
+		}
+		
+		fun_call stopUpOrDownF();
+
+		int counter = 0;
+		
+		while(counter < pieceNumber){
+			counter = counter + 1; 
+			int twiceOfpieceNumber = pieceNumber * 2;
+			fun_call paternSpray(twiceOfpieceNumber, width, length);
+		
+		}
+	
+		output ("Spraying process is succesful");
+		output ("Goodbye");	
+	}
+	
+}
+
+
+
